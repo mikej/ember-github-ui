@@ -2,16 +2,14 @@ import Ember from 'ember';
 
 export default Ember.Route.extend({
   model(params) {
-    let orgName = this.modelFor('org').id;
-    return $.get(`https://api.github.com/orgs/${orgName}/repos`).then(raw => {
-      raw.oldId = raw.id;
-      raw.id = raw.name;
-      return raw;
+    let orgId = Ember.get(this.modelFor('org'), 'login');
+    return $.get(`https://api.github.com/orgs/${orgId}/repos`).then(rawRepos => {
+      return rawRepos.map(rawRepo => {
+        rawRepo.oldId = rawRepo.id;
+        rawRepo.id = rawRepo.name;
+        return rawRepo;
+      });
     });
-  },
 
-  setupController(controller) {
-    this._super(...arguments);
-    controller.set('org', this.modelFor('org'));
   }
 });
