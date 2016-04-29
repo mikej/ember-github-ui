@@ -13,6 +13,7 @@ Router.map(function() {
       this.route('contributors');
       this.route('issues');
     }); // org/jquery/jquery-ui
+    this.route('notfound');
   });
   this.route('notfound', {path:'*path'});
 });
