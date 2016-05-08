@@ -13,8 +13,12 @@ export default Ember.Route.extend({
   },
 
   actions: {
-    fave(org) {
-      this.get('favourites').addFavourite(org);
+    favouriteClicked(org) {
+      if (this.get('favourites.orgs').contains(org)) {
+        this.get('favourites').removeFavourite(org);
+      } else {
+        this.get('favourites').addFavourite(org);
+      }
     }
   }
 });
