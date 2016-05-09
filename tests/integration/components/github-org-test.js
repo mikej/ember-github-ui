@@ -11,7 +11,9 @@ test('it renders', function(assert) {
 
   this.render(hbs`{{github-org}}`);
 
-  assert.equal(this.$().text().trim(), '');
+  assert.equal(this.$().text().trim(), `[
+Favourite
+]`);
 
   // Template block usage:
   this.render(hbs`
@@ -20,5 +22,32 @@ test('it renders', function(assert) {
     {{/github-org}}
   `);
 
-  assert.equal(this.$().text().trim(), 'template block text');
+  assert.equal(this.$().text().trim(), `[
+Favourite
+]`);
+});
+
+test('binding to org', function(assert) {
+  const org = Ember.Object.create({
+    id: 'testorg',
+    favorites: {
+      items: []
+    }
+  });
+
+  this.set('org', org);
+  this.render(hbs`{{github-org org=org on-fave=on-fav-clicked}}`);
+
+  // test the HTML rendered by the component - link should have the org login as its text
+  assert.equal(Ember.$('.github-org a').text(), 'testorg');
+
+  let actionCount = 0;
+  this.set('on-fav-clicked', function () {
+    actionCount++;
+  });
+ 
+  // the span is the "Favourite" button
+  Ember.$('.github-org span').click();
+ 
+  assert.equal(actionCount, 1, 'Action was fired once');
 });

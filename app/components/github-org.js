@@ -3,6 +3,7 @@ import isInArray from 'github-ui/utils/is-in-array';
 
 export default Ember.Component.extend({
   tagName: 'li',
+  classNames: ['github-org'],
   favourites: Ember.inject.service(),
   isFavourited: isInArray('org', 'favourites.orgs'),
   actions: {
